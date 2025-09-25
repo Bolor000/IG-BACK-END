@@ -98,6 +98,8 @@ app.post("/sign-up", async (req, res) => {
 
 app.post("/create", async (req, res) => {});
 
+app.post("/newPost", async (req, res) => {});
+
 app.get("/posts:userID", async (req, res) => {
   const params = req.params;
   const { userID } = params;
