@@ -96,7 +96,16 @@ app.post("/sign-up", async (req, res) => {
   });
 });
 
-app.post("/create", async (req, res) => {});
+app.post("/create", async (req, res) => {
+  const data = req.body;
+  const { userID, caption, images } = data;
+  const newPost = await postModel.create({
+    user: userID,
+    caption: caption,
+    images: images,
+  });
+  res.status(200).json(newPost);
+});
 
 app.post("/newPost", async (req, res) => {});
 
