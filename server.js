@@ -4,6 +4,10 @@ import { userModel } from "./schema/user.schema.js";
 import { postModel } from "./schema/post.schema.js";
 import { hash, compare } from "bcrypt";
 import cors from "cors";
+// import { signup } from "./controller/user/sign-up.js";
+import userRouter from "./router/user/user.route.js";
+import postRouter from "./router/post/post.route.js";
+// import { use } from "react";
 
 const port = 1212;
 const app = express();
@@ -42,7 +46,7 @@ app.post("/user/create", async (req, res) => {
   }
 });
 
-app.post("/post/create", async (req, res) => {
+app.post("/post/create", async (req, res) =>  {
   const data = req.body;
   const { userID, caption, images } = data;
   const newPost = await postModel.create({
@@ -53,69 +57,8 @@ app.post("/post/create", async (req, res) => {
   res.status(200).json(newPost);
 });
 
-app.post("/login", async (req, res) => {
-  const body = req.body;
-  const { email, password } = body;
-  const user = await userModel.findOne({ email });
-
-  if (user) {
-    const hashedPassword = user.password;
-    const isValid = await compare(password, hashedPassword);
-    if (isValid) {
-      res.json(user);
-    } else {
-      res.status(404).json({ message: "wrong password" });
-    }
-  } else {
-    res.status(404).json({ message: "need to register" });
-  }
-});
-
-app.post("/sign-up", async (req, res) => {
-  const body = req.body;
-  const saltRounds = 10;
-  const { username, email, password } = body;
-  const isExisting = await userModel.findOne({ email });
-  const hashedPassword = await hash(password, saltRounds);
-  if (isExisting) {
-    return res.status(400).json({ message: "User already exists" });
-  }
-  const newUser = await userModel.create({
-    username: username,
-    email: email,
-    password: hashedPassword,
-  });
-  
-  res.status(201).json({
-    message: "Signed up successfully",
-    user: {
-      _id: newUser._id,
-      username: newUser.username,
-      email: newUser.email,
-    },
-  });
-});
-
-app.post("/create", async (req, res) => {
-  const data = req.body;
-  const { userID, caption, images } = data;
-  const newPost = await postModel.create({
-    user: userID,
-    caption: caption,
-    images: images,
-  });
-  res.status(200).json(newPost);
-});
-
-app.post("/newPost", async (req, res) => {});
-
-app.get("/posts:userID", async (req, res) => {
-  const params = req.params;
-  const { userID } = params;
-  const posts = await postModel.find({ user: userID });
-
-  res.status(200).json(posts);
-});
+app.use("/", userRouter);
+app.use("/", postRouter);
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
