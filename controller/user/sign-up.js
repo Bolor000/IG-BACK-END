@@ -11,20 +11,16 @@ export const signup = async (req, res) => {
   const isExisting = await userModel.findOne({ email });
 
   if (isExisting) {
-    return res.status(400).json({ message: "User already exists" });
-  }
-  const newUser = await userModel.create({
+    res.status(400).json({ message: "User already exists" })
+  } else {
+  const createdUser = await userModel.create({
     username: username,
     email: email,
     password: hashedPassword,
   });
-  
-  res.status(201).json({
-    message: "Signed up successfully",
-    user: {
-      _id: newUser._id,
-      username: newUser.username,
-      email: newUser.email,
-    },
-  });
+   const accessToken = jwt.sign({ 
+    data: createdUser 
+  }, JWT_SECRET, { expiresIn: "1h" });
+  res.json(accessToken);
+  }
 }

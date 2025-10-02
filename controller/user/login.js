@@ -1,8 +1,11 @@
 import { compare } from "bcrypt";
 import { userModel } from "../../schema/user.schema.js";
+import jwt from "jsonwebtoken";
+
 
 export const login = async (req, res) => {
   const body = req.body;
+ const JWT_SECRET = "TEST";
   const { email, password } = body;
   const user = await userModel.findOne({ email });
 
@@ -10,7 +13,10 @@ export const login = async (req, res) => {
     const hashedPassword = user.password;
     const isValid = await compare(password, hashedPassword);
     if (isValid) {
-      res.json(user);
+     const accessToken = jwt.sign({
+          data: user ,
+        }, JWT_SECRET,{ expiresIn: "1h" });
+      res.json(accessToken);
     } else {
       res.status(404).json({ message: "wrong password" });
     }
