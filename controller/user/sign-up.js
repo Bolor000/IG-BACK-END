@@ -1,5 +1,6 @@
 import { hash } from "bcrypt";
 import { userModel } from "../../schema/user.schema.js";
+import jwt from "jsonwebtoken";
 
 export const signup = async (req, res) => {
   const body = req.body;
@@ -18,6 +19,7 @@ export const signup = async (req, res) => {
     email: email,
     password: hashedPassword,
   });
+  
    const accessToken = jwt.sign({ 
     data: createdUser 
   }, JWT_SECRET, { expiresIn: "1h" });

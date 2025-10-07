@@ -1,12 +1,15 @@
 import { postModel } from "../../schema/post.schema.js";
 
 export const Createpost = async (req, res) => {
-  const data = req.body;
-  const { caption, images } = data;
-  const newPost = await postModel.create({
-    user: userID,
-    caption: caption,
-    images: images,
+  const body = req.body;
+  const user = req.user;
+
+  const { caption, images } = body;
+
+  const CreatedPost = await postModel.create({
+    caption,
+    images,
+    user: user._id
   });
-  res.status(200).json(newPost);
+  res.status(200).json(CreatedPost);
 };
