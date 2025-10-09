@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const login = async (req, res) => {
   const body = req.body;
- const JWT_SECRET = "TEST";
+  const JWT_SECRET = process.env.JWT_SECRET
   const { email, password } = body;
   const user = await userModel.findOne({ email });
 

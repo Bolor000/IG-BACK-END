@@ -7,7 +7,7 @@ const userRouter = express.Router()
 
 userRouter.post("/sign-up", signup);
 userRouter.post("/login", login);
-userRouter.post("/user/create", NewUser);
+userRouter.post("/user/create", NewUser);  
 
 
 

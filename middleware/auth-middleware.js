@@ -2,13 +2,13 @@ import jwt from "jsonwebtoken";
 
 export const authMiddleWare = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader) throw new Error ("need auth header")
+  if (!authHeader) res.status(400).json ({message: 'need auth header'})
     
     const accesstoken = authHeader.split("")[1];
-  if (!accesstoken) throw new Error("need auth token");
+  if (!accesstoken) res.status(400).json({ message: "need auth token" });
   
-  const user = jwt.verify(accesstoken, "TEST");
-  if (!user) throw new Error("need to sign-in");
+  const user = jwt.verify(accesstoken, process.env.JWT_SECRET)
+  if (!user) res.status(400).json({ message: "need to sign-in" });
  
   req.user = user.data
 
