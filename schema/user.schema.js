@@ -6,8 +6,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   bio: { type: String, required: false, default: null },
   profilePicture: { type: String, required: false },
-  followers: [{ type: Schema.Types.ObjectId, required: true }],
-  following: [{ type: Schema.Types.ObjectId, required: true }],
+  followers: [{ type: Schema.Types.ObjectId, ref: "user" }],
+  following: [{ type: Schema.Types.ObjectId, ref: "user" }],
   createdAt: { type: Date, default: Date.now() },
   updateAt: { type: Date, default: Date.now() },
 });

@@ -1,4 +1,4 @@
-import { postModel } from "../../schema/post.schema"
+import { postModel } from "../../schema/post.schema.js"
 
 export const togglePostLike = async (req, res) => {
     const user = req.user

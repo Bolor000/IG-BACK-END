@@ -6,7 +6,9 @@ import { hash, compare } from "bcrypt";
 import cors from "cors";
 import userRouter from "./router/user/user.route.js";
 import postRouter from "./router/post/post.route.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 const port = 1212;
 const app = express();
 app.use(cors());
@@ -24,9 +26,13 @@ app.get("/user", async (req, res) => {
   res.json(user);
 });
 
-app.use("/", userRouter);
-app.use("/", postRouter);
+app.use("/users", userRouter);
+app.use("/posts", postRouter);
+
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
 });
+
+
+
