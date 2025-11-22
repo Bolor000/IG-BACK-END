@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 import commentRouter from "./router/comment/comment.route.js";
 
 dotenv.config();
-const port = 1212;
+const port = "https://ig-back-end-rgcc.onrender.com" || 1212;
 const app = express();
 app.use(cors());
 app.use(express.json());
